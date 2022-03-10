@@ -2,9 +2,6 @@ from math import floor
 
 
 def statement(invoice, plays):
-	totalAmount = 0
-	volumeCredits = 0
-	result = f"Statement for {invoice['customer']}\n"
 
 	def usd(aNumber):
 		return f'${aNumber/100:.2f}'
@@ -34,10 +31,13 @@ def statement(invoice, plays):
 			result += floor(aPerformance['audience'] / 5)
 		return result
 
+	totalAmount = 0
+	result = f"Statement for {invoice['customer']}\n"
 	for perf in invoice['performances']:
 		result += f" {playFor(perf)['name']}: {usd(amountFor(perf))} ({perf['audience']} seats)\n"
 		totalAmount += amountFor(perf)
 
+	volumeCredits = 0
 	for perf in invoice['performances']:
 		volumeCredits += volumeCreditsFor(perf)
 	result += f'Amount owed is {usd(totalAmount)}\n'
