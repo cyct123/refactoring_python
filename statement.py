@@ -8,7 +8,6 @@ def statement(invoice, plays):
 	return renderPlainText(createStatementData(invoice, plays))
 
 def renderPlainText(data):
-
 	result = f"Statement for {data['customer']}\n"
 	for perf in data['performances']:
 		result += f" {perf['play']['name']}: {usd(perf['amount'])} ({perf['audience']} seats)\n"

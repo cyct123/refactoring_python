@@ -2,32 +2,42 @@ from functools import reduce
 from math import floor
 
 
+class PerformanceCalculator:
+
+	def __init__(self, aPerformance, aPlay) -> None:
+		self.performance = aPerformance
+		self.play = aPlay
+
+	@property
+	def amount(self):
+		result = 0
+		if self.play['type'] == 'tragedy':
+			result = 40000
+			if self.performance['audience'] > 30:
+				result += 1000 * (self.performance['audience'] - 30)
+		elif self.play['type'] == 'comedy':
+			result = 30000
+			if self.performance['audience'] > 20:
+				result += 10000 + 500 * (self.performance['audience'] - 20)
+			result += 300 * self.performance['audience']
+		else:
+			raise Exception(f"unknown type: {self.play['type']}")
+		return result
+
+
 def createStatementData(invoice, plays):
+
 	def enrichPerformance(aPerformance):
+		calculator = PerformanceCalculator(aPerformance, playFor(aPerformance))
 		result = aPerformance.copy()
-		result['play'] = playFor(result)
-		result['amount'] = amountFor(result)
+		result['play'] = calculator.play
+		result['amount'] = calculator.amount
 		result['volumeCredits'] = volumeCreditsFor(result)
 		return result
 	
 	def playFor(aPerformance):
 		return plays[aPerformance['playID']]
 	
-	def amountFor(aPerformance):
-		result = 0
-		if aPerformance['play']['type'] == 'tragedy':
-			result = 40000
-			if aPerformance['audience'] > 30:
-				result += 1000 * (aPerformance['audience'] - 30)
-		elif aPerformance['play']['type'] == 'comedy':
-			result = 30000
-			if aPerformance['audience'] > 20:
-				result += 10000 + 500 * (aPerformance['audience'] - 20)
-			result += 300 * aPerformance['audience']
-		else:
-			raise Exception(f"unknown type: {aPerformance['play']['type']}")
-		return result
-
 	def volumeCreditsFor(aPerformance):
 		result = 0
 		result += max(aPerformance['audience'] - 30, 0)
