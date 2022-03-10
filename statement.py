@@ -22,8 +22,11 @@ def statement(invoice, plays):
 	volumeCredits = 0
 	result = f"Statement for {invoice['customer']}\n"
 	locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
+
+	def playFor(aPerformance):
+		return plays[aPerformance['playID']]
 	for perf in invoice['performances']:
-		play = plays[perf['playID']]
+		play = playFor(perf)
 		thisAmount = amountFor(perf, play)
 		
 		volumeCredits += max(perf['audience'] - 30, 0)
