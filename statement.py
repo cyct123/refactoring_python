@@ -1,17 +1,17 @@
 from math import floor
 import locale
 
-def amountFor(perf, play):
+def amountFor(aPerformance, play):
 	result = 0
 	if play['type'] == 'tragedy':
 		result = 40000
-		if perf['audience'] > 30:
-			result += 1000 * (perf['audience'] - 30)
+		if aPerformance['audience'] > 30:
+			result += 1000 * (aPerformance['audience'] - 30)
 	elif play['type'] == 'comedy':
 		result = 30000
-		if perf['audience'] > 20:
-			result += 10000 + 500 * (perf['audience'] - 20)
-		result += 300 * perf['audience']
+		if aPerformance['audience'] > 20:
+			result += 10000 + 500 * (aPerformance['audience'] - 20)
+		result += 300 * aPerformance['audience']
 	else:
 		raise Exception(f"unknown type: {play['type']}")
 	return result
