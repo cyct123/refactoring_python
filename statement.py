@@ -1,12 +1,13 @@
 from math import floor
-import locale
 
 
 def statement(invoice, plays):
 	totalAmount = 0
 	volumeCredits = 0
 	result = f"Statement for {invoice['customer']}\n"
-	locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
+
+	def usd(aNumber):
+		return f'${aNumber/100:.2f}'
 
 	def playFor(aPerformance):
 		return plays[aPerformance['playID']]
@@ -36,8 +37,8 @@ def statement(invoice, plays):
 	for perf in invoice['performances']:
 		volumeCredits += volumeCreditsFor(perf)
 
-		result += f" {playFor(perf)['name']}: {locale.currency(amountFor(perf) / 100)} ({perf['audience']} seats)\n"
+		result += f" {playFor(perf)['name']}: {usd(amountFor(perf))} ({perf['audience']} seats)\n"
 		totalAmount += amountFor(perf)
-	result += f'Amount owed is {locale.currency(totalAmount / 100)}\n'
+	result += f'Amount owed is {usd(totalAmount)}\n'
 	result += f'You earned {volumeCredits} credits\n'
 	return result
