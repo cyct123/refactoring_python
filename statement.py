@@ -1,3 +1,4 @@
+from functools import reduce
 from math import floor
 
 
@@ -36,16 +37,10 @@ def statement(invoice, plays):
 		return result
 	
 	def totalVolumeCredits(data):
-		result = 0
-		for perf in data['performances']:
-			result += perf['volumeCredits']
-		return result
+		return reduce(lambda total, p: total + p['volumeCredits'], data['performances'], 0)
 	
 	def totalAmount(data):
-		result = 0
-		for perf in data['performances']:
-			result += perf['amount']
-		return result
+		return reduce(lambda total, p: total + p['amount'], data['performances'], 0)
 
 	statementData = {}
 	statementData['customer'] = invoice['customer']
