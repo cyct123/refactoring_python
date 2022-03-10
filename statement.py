@@ -2,7 +2,9 @@ from math import floor
 
 
 def statement(invoice, plays):
+	return renderPlainText(invoice, plays)
 
+def renderPlainText(invoice, plays):
 	def usd(aNumber):
 		return f'${aNumber/100:.2f}'
 
