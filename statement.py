@@ -26,14 +26,13 @@ def statement(invoice, plays):
 	def playFor(aPerformance):
 		return plays[aPerformance['playID']]
 	for perf in invoice['performances']:
-		play = playFor(perf)
-		thisAmount = amountFor(perf, play)
+		thisAmount = amountFor(perf, playFor(perf))
 		
 		volumeCredits += max(perf['audience'] - 30, 0)
-		if play['type'] == "comedy":
+		if playFor(perf)['type'] == "comedy":
 			volumeCredits += floor(perf['audience'] / 5)
 
-		result += f" {play['name']}: {locale.currency(thisAmount / 100)} ({perf['audience']} seats)\n"
+		result += f" {playFor(perf)['name']}: {locale.currency(thisAmount / 100)} ({perf['audience']} seats)\n"
 		totalAmount += thisAmount
 	result += f'Amount owed is {locale.currency(totalAmount / 100)}\n'
 	result += f'You earned {volumeCredits} credits\n'
