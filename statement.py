@@ -26,11 +26,15 @@ def statement(invoice, plays):
 			raise Exception(f"unknown type: {playFor(aPerformance)['type']}")
 		return result
 
+	def volumeCreditsFor(aPerformance):
+		result = 0
+		result += max(aPerformance['audience'] - 30, 0)
+		if playFor(aPerformance)['type'] == "comedy":
+			result += floor(aPerformance['audience'] / 5)
+		return result
+
 	for perf in invoice['performances']:
-		
-		volumeCredits += max(perf['audience'] - 30, 0)
-		if playFor(perf)['type'] == "comedy":
-			volumeCredits += floor(perf['audience'] / 5)
+		volumeCredits += volumeCreditsFor(perf)
 
 		result += f" {playFor(perf)['name']}: {locale.currency(amountFor(perf) / 100)} ({perf['audience']} seats)\n"
 		totalAmount += amountFor(perf)
